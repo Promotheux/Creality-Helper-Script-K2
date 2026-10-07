@@ -127,7 +127,7 @@ handle_choice() {
         23) tail -50 "$LOGS_DIR/klippy.log" | less ;;
         24) tail -50 "$LOGS_DIR/moonraker.log" | less ;;
         25) sh "$SCRIPTS_DIR/system.sh" show_installed ;;
-        26) sh "$SCRIPTS_DIR/patches.sh" apply_dxc_k2_series ;;
+        26) sh "$SCRIPTS_DIR/patches.sh" patch ;;
         0)  echo ""; echo "Goodbye!"; echo ""; exit 0 ;;
         *)  echo -e "${RED}Invalid choice.${NC}"; sleep 1 ;;
     esac
