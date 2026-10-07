@@ -342,23 +342,6 @@ patch_stock_configs() {
         sed -i 's/mesh_min: 5,5/mesh_min: 20,20/' "$printer_cfg"
         log_success "Patched printer.cfg mesh_min"
     fi
-
-    # Restore motor_control.cfg from stock if it has been truncated/modified.
-    # A stripped-down motor_control.cfg (missing the PID/protection/LESO
-    # tuning block, e.g. x_protection_param_prt_track_max_err) makes the
-    # closed-loop X stepper far more sensitive to position-tracking errors,
-    # causing key789 stalls during the CFS cut-position move (CR_BOX_CUT).
-    local motor_cfg="$CONFIG_DIR/motor_control.cfg"
-    local stock_motor_cfg="/rom/usr/share/klipper/config/F008_CR0CN240319C13/motor_control.cfg"
-    if [ -f "$motor_cfg" ] && [ -f "$stock_motor_cfg" ]; then
-        if ! diff -q "$stock_motor_cfg" "$motor_cfg" > /dev/null 2>&1; then
-            cp "$motor_cfg" "${motor_cfg}.before_patch" 2>/dev/null
-            cp "$stock_motor_cfg" "$motor_cfg"
-            log_success "Restored motor_control.cfg from stock (was truncated/modified - this caused X-axis tracking errors during CFS cuts)"
-        else
-            log_info "motor_control.cfg already matches stock."
-        fi
-    fi
 }
 
 
