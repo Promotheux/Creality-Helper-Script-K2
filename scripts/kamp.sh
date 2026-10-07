@@ -50,7 +50,7 @@ PYEOF
 
     # Write KAMP_Settings.cfg tuned for K2 Plus 350x350 bed
     cat > "$KAMP_DIR/KAMP_Settings.cfg" << 'EOF'
-# KAMP Settings — K2 Plus (350x350mm bed)
+# KAMP Settings — K2 (260x260mm bed)
 [include ./Adaptive_Meshing.cfg]
 [include ./Line_Purge.cfg]
 
