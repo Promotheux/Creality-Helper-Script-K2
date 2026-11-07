@@ -54,37 +54,38 @@ main_menu() {
     echo -e "    ${YELLOW}6)${NC} ${GREEN}Apply DXC K2 Series Patches${NC}"
     echo ""
     echo -e "  ${CYAN}--- Step 3: Leveling & calibration ---${NC}"
-    echo -e "    ${YELLOW}7)${NC} ${GREEN}KAMP: use KAMP-K2 (info)${NC}"
-    echo -e "    ${YELLOW}8)${NC} ${GREEN}Improved Shapers Calibrations${NC}"
+    echo -e "    ${YELLOW}7)${NC} ${GREEN}CFS Box Guard (prevents key171/key60 crash)${NC}"
+    echo -e "    ${YELLOW}8)${NC} ${GREEN}KAMP: use KAMP-K2 (info)${NC}"
+    echo -e "    ${YELLOW}9)${NC} ${GREEN}Improved Shapers Calibrations${NC}"
     echo ""
     echo -e "  ${CYAN}--- Step 4: Web interface & camera ---${NC}"
-    echo -e "    ${YELLOW}9)${NC} ${GREEN}Fluidd (install/update/repair   port 4408)${NC}"
-    echo -e "   ${YELLOW}10)${NC} ${GREEN}Mainsail (install/update/repair   port 4409)${NC}"
-    echo -e "   ${YELLOW}11)${NC} ${GREEN}CFS Panel for Mainsail${NC}"
-    echo -e "   ${YELLOW}12)${NC} ${GREEN}Moonraker Timelapse${NC}"
-    echo -e "   ${YELLOW}13)${NC} ${GREEN}Camera Support for Fluidd and Mainsail${NC}"
-    echo -e "   ${YELLOW}14)${NC} ${GREEN}HelixScreen (touchscreen UI)${NC}"
+    echo -e "   ${YELLOW}10)${NC} ${GREEN}Fluidd (install/update/repair   port 4408)${NC}"
+    echo -e "   ${YELLOW}11)${NC} ${GREEN}Mainsail (install/update/repair   port 4409)${NC}"
+    echo -e "   ${YELLOW}12)${NC} ${GREEN}CFS Panel for Mainsail${NC}"
+    echo -e "   ${YELLOW}13)${NC} ${GREEN}Moonraker Timelapse${NC}"
+    echo -e "   ${YELLOW}14)${NC} ${GREEN}Camera Support for Fluidd and Mainsail${NC}"
+    echo -e "   ${YELLOW}15)${NC} ${GREEN}HelixScreen (touchscreen UI)${NC}"
     echo ""
     echo -e "  ${CYAN}--- Step 5: Remote access & notifications ---${NC}"
-    echo -e "   ${YELLOW}15)${NC} ${GREEN}OctoEverywhere${NC}"
-    echo -e "   ${YELLOW}16)${NC} ${GREEN}Mobileraker Companion${NC}"
-    echo -e "   ${YELLOW}17)${NC} ${GREEN}Entware Package Manager${NC}"
-    echo -e "   ${YELLOW}18)${NC} ${GREEN}Git Backup${NC}"
+    echo -e "   ${YELLOW}16)${NC} ${GREEN}OctoEverywhere${NC}"
+    echo -e "   ${YELLOW}17)${NC} ${GREEN}Mobileraker Companion${NC}"
+    echo -e "   ${YELLOW}18)${NC} ${GREEN}Entware Package Manager${NC}"
+    echo -e "   ${YELLOW}19)${NC} ${GREEN}Git Backup${NC}"
     echo ""
     echo -e "  ${WHITE}[Remove] Menu${NC}"
-    echo -e "   ${YELLOW}19)${NC} ${GREEN}Remove a feature${NC}"
+    echo -e "   ${YELLOW}20)${NC} ${GREEN}Remove a feature${NC}"
     echo ""
     echo -e "  ${WHITE}[Backup & Restore] Menu${NC}"
-    echo -e "   ${YELLOW}20)${NC} ${GREEN}Backup Klipper configuration${NC}"
-    echo -e "   ${YELLOW}21)${NC} ${GREEN}Restore Klipper configuration${NC}"
+    echo -e "   ${YELLOW}21)${NC} ${GREEN}Backup Klipper configuration${NC}"
+    echo -e "   ${YELLOW}22)${NC} ${GREEN}Restore Klipper configuration${NC}"
     echo ""
     echo -e "  ${WHITE}[Tools] Menu${NC}"
-    echo -e "   ${YELLOW}22)${NC} ${GREEN}Restart Klipper${NC}"
-    echo -e "   ${YELLOW}23)${NC} ${GREEN}Restart Moonraker${NC}"
-    echo -e "   ${YELLOW}24)${NC} ${GREEN}Restart Nginx${NC}"
-    echo -e "   ${YELLOW}25)${NC} ${GREEN}View Klipper log${NC}"
-    echo -e "   ${YELLOW}26)${NC} ${GREEN}View Moonraker log${NC}"
-    echo -e "   ${YELLOW}27)${NC} ${GREEN}Show installed features${NC}"
+    echo -e "   ${YELLOW}23)${NC} ${GREEN}Restart Klipper${NC}"
+    echo -e "   ${YELLOW}24)${NC} ${GREEN}Restart Moonraker${NC}"
+    echo -e "   ${YELLOW}25)${NC} ${GREEN}Restart Nginx${NC}"
+    echo -e "   ${YELLOW}26)${NC} ${GREEN}View Klipper log${NC}"
+    echo -e "   ${YELLOW}27)${NC} ${GREEN}View Moonraker log${NC}"
+    echo -e "   ${YELLOW}28)${NC} ${GREEN}Show installed features${NC}"
     echo ""
     echo -e "    ${YELLOW}0)${NC} ${RED}Exit${NC}"
     echo ""
@@ -108,27 +109,28 @@ handle_choice() {
         4)  confirm_install "Save Z-Offset Macros" && sh "$SCRIPTS_DIR/z_offset.sh" install ;;
         5)  confirm_install "M600 Support" && sh "$SCRIPTS_DIR/m600.sh" install ;;
         6)  confirm_install "DXC-2 Patches" && sh "$SCRIPTS_DIR/patches.sh" patch ;;
-        7)  sh "$SCRIPTS_DIR/kamp.sh" install ;;
-        8)  confirm_install "Improved Shapers Calibrations" && sh "$SCRIPTS_DIR/shapers.sh" install ;;
-        9)  confirm_install "Fluidd" && sh "$SCRIPTS_DIR/fluidd.sh" install ;;
-        10) confirm_install "Mainsail" && sh "$SCRIPTS_DIR/mainsail.sh" install ;;
-        11) confirm_install "CFS Panel for Mainsail" && sh "$SCRIPTS_DIR/cfs_panel.sh" install ;;
-        12) confirm_install "Moonraker Timelapse" && sh "$SCRIPTS_DIR/timelapse.sh" install ;;
-        13) sh "$SCRIPTS_DIR/camera.sh" install ;;
-        14) sh "$SCRIPTS_DIR/helixscreen.sh" install ;;
-        15) sh "$SCRIPTS_DIR/octoeverywhere.sh" install ;;
-        16) sh "$SCRIPTS_DIR/mobileraker.sh" install ;;
-        17) sh "$SCRIPTS_DIR/entware.sh" install ;;
-        18) sh "$SCRIPTS_DIR/git_backup.sh" install ;;
-        19) remove_menu; main_menu; return ;;
-        20) sh "$SCRIPTS_DIR/backup.sh" backup ;;
-        21) sh "$SCRIPTS_DIR/backup.sh" restore ;;
-        22) sh "$SCRIPTS_DIR/system.sh" restart_klipper ;;
-        23) sh "$SCRIPTS_DIR/system.sh" restart_moonraker ;;
-        24) sh "$SCRIPTS_DIR/system.sh" restart_nginx ;;
-        25) tail -50 "$LOGS_DIR/klippy.log" | less ;;
-        26) tail -50 "$LOGS_DIR/moonraker.log" | less ;;
-        27) sh "$SCRIPTS_DIR/system.sh" show_installed ;;
+        7)  confirm_install "CFS Box Guard" && sh "$SCRIPTS_DIR/box_guard.sh" install ;;
+        8)  sh "$SCRIPTS_DIR/kamp.sh" install ;;
+        9)  confirm_install "Improved Shapers Calibrations" && sh "$SCRIPTS_DIR/shapers.sh" install ;;
+        10) confirm_install "Fluidd" && sh "$SCRIPTS_DIR/fluidd.sh" install ;;
+        11) confirm_install "Mainsail" && sh "$SCRIPTS_DIR/mainsail.sh" install ;;
+        12) confirm_install "CFS Panel for Mainsail" && sh "$SCRIPTS_DIR/cfs_panel.sh" install ;;
+        13) confirm_install "Moonraker Timelapse" && sh "$SCRIPTS_DIR/timelapse.sh" install ;;
+        14) sh "$SCRIPTS_DIR/camera.sh" install ;;
+        15) sh "$SCRIPTS_DIR/helixscreen.sh" install ;;
+        16) sh "$SCRIPTS_DIR/octoeverywhere.sh" install ;;
+        17) sh "$SCRIPTS_DIR/mobileraker.sh" install ;;
+        18) sh "$SCRIPTS_DIR/entware.sh" install ;;
+        19) sh "$SCRIPTS_DIR/git_backup.sh" install ;;
+        20) remove_menu; main_menu; return ;;
+        21) sh "$SCRIPTS_DIR/backup.sh" backup ;;
+        22) sh "$SCRIPTS_DIR/backup.sh" restore ;;
+        23) sh "$SCRIPTS_DIR/system.sh" restart_klipper ;;
+        24) sh "$SCRIPTS_DIR/system.sh" restart_moonraker ;;
+        25) sh "$SCRIPTS_DIR/system.sh" restart_nginx ;;
+        26) tail -50 "$LOGS_DIR/klippy.log" | less ;;
+        27) tail -50 "$LOGS_DIR/moonraker.log" | less ;;
+        28) sh "$SCRIPTS_DIR/system.sh" show_installed ;;
         0)  echo ""; echo "Goodbye!"; echo ""; exit 0 ;;
         *)  echo -e "${RED}Invalid choice.${NC}"; sleep 1 ;;
     esac
@@ -148,15 +150,16 @@ remove_menu() {
     echo -e "    ${YELLOW}4)${NC}  ${GREEN}Save Z-Offset Macros${NC}"
     echo -e "    ${YELLOW}5)${NC}  ${GREEN}M600 Support${NC}"
     echo -e "    ${YELLOW}6)${NC}  ${GREEN}DXC-2 Patches${NC}"
-    echo -e "    ${YELLOW}7)${NC}  ${GREEN}KAMP (older upstream install)${NC}"
-    echo -e "    ${YELLOW}8)${NC}  ${GREEN}Improved Shapers Calibrations${NC}"
-    echo -e "    ${YELLOW}9)${NC}  ${GREEN}Restore stock Fluidd${NC}"
-    echo -e "   ${YELLOW}10)${NC}  ${GREEN}Mainsail${NC}"
-    echo -e "   ${YELLOW}11)${NC}  ${GREEN}CFS Panel for Mainsail${NC}"
-    echo -e "   ${YELLOW}12)${NC}  ${GREEN}Moonraker Timelapse${NC}"
-    echo -e "   ${YELLOW}13)${NC}  ${GREEN}Camera Support for Fluidd and Mainsail${NC}"
-    echo -e "   ${YELLOW}14)${NC}  ${GREEN}HelixScreen${NC}"
-    echo -e "   ${YELLOW}15)${NC}  ${GREEN}Entware Package Manager${NC}"
+    echo -e "    ${YELLOW}7)${NC}  ${GREEN}CFS Box Guard${NC}"
+    echo -e "    ${YELLOW}8)${NC}  ${GREEN}KAMP (older upstream install)${NC}"
+    echo -e "    ${YELLOW}9)${NC}  ${GREEN}Improved Shapers Calibrations${NC}"
+    echo -e "   ${YELLOW}10)${NC}  ${GREEN}Restore stock Fluidd${NC}"
+    echo -e "   ${YELLOW}11)${NC}  ${GREEN}Mainsail${NC}"
+    echo -e "   ${YELLOW}12)${NC}  ${GREEN}CFS Panel for Mainsail${NC}"
+    echo -e "   ${YELLOW}13)${NC}  ${GREEN}Moonraker Timelapse${NC}"
+    echo -e "   ${YELLOW}14)${NC}  ${GREEN}Camera Support for Fluidd and Mainsail${NC}"
+    echo -e "   ${YELLOW}15)${NC}  ${GREEN}HelixScreen${NC}"
+    echo -e "   ${YELLOW}16)${NC}  ${GREEN}Entware Package Manager${NC}"
     echo -e "    ${YELLOW}0)${NC}  ${RED}Back to main menu${NC}"
     echo ""
     printf "  ${GREEN}Enter choice:${NC} "
@@ -168,15 +171,16 @@ remove_menu() {
         4)  sh "$SCRIPTS_DIR/z_offset.sh" remove ;;
         5)  sh "$SCRIPTS_DIR/m600.sh" remove ;;
         6)  sh "$SCRIPTS_DIR/patches.sh" restore ;;
-        7)  sh "$SCRIPTS_DIR/kamp.sh" remove ;;
-        8)  sh "$SCRIPTS_DIR/shapers.sh" remove ;;
-        9)  sh "$SCRIPTS_DIR/fluidd.sh" remove ;;
-        10) sh "$SCRIPTS_DIR/mainsail.sh" remove ;;
-        11) sh "$SCRIPTS_DIR/cfs_panel.sh" remove ;;
-        12) sh "$SCRIPTS_DIR/timelapse.sh" remove ;;
-        13) sh "$SCRIPTS_DIR/camera.sh" remove ;;
-        14) sh "$SCRIPTS_DIR/helixscreen.sh" remove ;;
-        15) sh "$SCRIPTS_DIR/entware.sh" remove ;;
+        7)  sh "$SCRIPTS_DIR/box_guard.sh" remove ;;
+        8)  sh "$SCRIPTS_DIR/kamp.sh" remove ;;
+        9)  sh "$SCRIPTS_DIR/shapers.sh" remove ;;
+        10) sh "$SCRIPTS_DIR/fluidd.sh" remove ;;
+        11) sh "$SCRIPTS_DIR/mainsail.sh" remove ;;
+        12) sh "$SCRIPTS_DIR/cfs_panel.sh" remove ;;
+        13) sh "$SCRIPTS_DIR/timelapse.sh" remove ;;
+        14) sh "$SCRIPTS_DIR/camera.sh" remove ;;
+        15) sh "$SCRIPTS_DIR/helixscreen.sh" remove ;;
+        16) sh "$SCRIPTS_DIR/entware.sh" remove ;;
         0)  return ;;
         *)  echo -e "${RED}Invalid choice.${NC}"; sleep 1; remove_menu; return ;;
     esac

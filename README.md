@@ -27,18 +27,19 @@ sh /mnt/UDISK/helper-script/helper.sh
 | 4 | Save Z-Offset Macros |
 | 5 | M600 Filament Change Support |
 | 6 | DXC-2 patches (longer retract after cut; reapplied at boot after Creality updates) |
-| 7 | KAMP: points to [KAMP-K2](https://github.com/grant0013/KAMP-K2) (upstream KAMP does not work on K2 stock firmware) |
-| 8 | Improved Shapers Calibrations |
-| 9 | Fluidd (install/update/repair - port 4408) |
-| 10 | Mainsail (install/update/repair - port 4409) |
-| 11 | CFS Panel for Mainsail (written for the K2 Plus, test on your K2) |
-| 12 | Moonraker Timelapse |
-| 13 | Camera Support for Fluidd and Mainsail (WebRTC via go2rtc) |
-| 14 | HelixScreen (modern touchscreen UI) |
-| 15 | OctoEverywhere |
-| 16 | Mobileraker Companion |
-| 17 | Entware Package Manager |
-| 18 | Git Backup |
+| 7 | CFS Box Guard (skips CFS commands with empty ADDR/NUM that crash Klipper with key171/key60) |
+| 8 | KAMP: points to [KAMP-K2](https://github.com/grant0013/KAMP-K2) (upstream KAMP does not work on K2 stock firmware) |
+| 9 | Improved Shapers Calibrations |
+| 10 | Fluidd (install/update/repair - port 4408) |
+| 11 | Mainsail (install/update/repair - port 4409) |
+| 12 | CFS Panel for Mainsail (written for the K2 Plus, test on your K2) |
+| 13 | Moonraker Timelapse |
+| 14 | Camera Support for Fluidd and Mainsail (WebRTC via go2rtc) |
+| 15 | HelixScreen (modern touchscreen UI) |
+| 16 | OctoEverywhere |
+| 17 | Mobileraker Companion |
+| 18 | Entware Package Manager |
+| 19 | Git Backup |
 
 ## Requirements
 
@@ -68,5 +69,6 @@ sh /mnt/UDISK/helper-script/helper.sh
 - [Fluidd](https://docs.fluidd.xyz) - Web interface
 - [Mainsail](https://docs.mainsail.xyz) - Web interface
 - [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) / [KAMP-K2](https://github.com/grant0013/KAMP-K2) - Adaptive meshing
+- [opoeta/k2-improvements](https://github.com/opoeta/k2-improvements) - CFS box guard
 - [swilsonnc/K2-plus-cfs-panel](https://github.com/swilsonnc/K2-plus-cfs-panel) - CFS panel for Mainsail
 - [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) - Wiki theme
