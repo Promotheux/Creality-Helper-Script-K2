@@ -54,7 +54,7 @@ main_menu() {
     echo -e "    ${YELLOW}6)${NC} ${GREEN}Apply DXC K2 Series Patches${NC}"
     echo ""
     echo -e "  ${CYAN}--- Step 3: Leveling & calibration ---${NC}"
-    echo -e "    ${YELLOW}7)${NC} ${GREEN}Klipper Adaptive Meshing & Purging (KAMP)${NC}"
+    echo -e "    ${YELLOW}7)${NC} ${GREEN}KAMP: use KAMP-K2 (info)${NC}"
     echo -e "    ${YELLOW}8)${NC} ${GREEN}Improved Shapers Calibrations${NC}"
     echo ""
     echo -e "  ${CYAN}--- Step 4: Web interface & camera ---${NC}"
@@ -108,7 +108,7 @@ handle_choice() {
         4)  confirm_install "Save Z-Offset Macros" && sh "$SCRIPTS_DIR/z_offset.sh" install ;;
         5)  confirm_install "M600 Support" && sh "$SCRIPTS_DIR/m600.sh" install ;;
         6)  confirm_install "DXC-2 Patches" && sh "$SCRIPTS_DIR/patches.sh" patch ;;
-        7)  confirm_install "KAMP" && sh "$SCRIPTS_DIR/kamp.sh" install ;;
+        7)  sh "$SCRIPTS_DIR/kamp.sh" install ;;
         8)  confirm_install "Improved Shapers Calibrations" && sh "$SCRIPTS_DIR/shapers.sh" install ;;
         9)  confirm_install "Fluidd" && sh "$SCRIPTS_DIR/fluidd.sh" install ;;
         10) confirm_install "Mainsail" && sh "$SCRIPTS_DIR/mainsail.sh" install ;;
@@ -148,7 +148,7 @@ remove_menu() {
     echo -e "    ${YELLOW}4)${NC}  ${GREEN}Save Z-Offset Macros${NC}"
     echo -e "    ${YELLOW}5)${NC}  ${GREEN}M600 Support${NC}"
     echo -e "    ${YELLOW}6)${NC}  ${GREEN}DXC-2 Patches${NC}"
-    echo -e "    ${YELLOW}7)${NC}  ${GREEN}KAMP${NC}"
+    echo -e "    ${YELLOW}7)${NC}  ${GREEN}KAMP (older upstream install)${NC}"
     echo -e "    ${YELLOW}8)${NC}  ${GREEN}Improved Shapers Calibrations${NC}"
     echo -e "    ${YELLOW}9)${NC}  ${GREEN}Restore stock Fluidd${NC}"
     echo -e "   ${YELLOW}10)${NC}  ${GREEN}Mainsail${NC}"

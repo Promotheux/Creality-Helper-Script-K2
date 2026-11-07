@@ -1,21 +1,18 @@
-# Creality K2 Plus - Helper Script
+# Creality K2 - Helper Script
 
-A menu-driven helper script for the **Creality K2 Plus** and **K2 Plus Combo (with CFS)**.
+A menu-driven helper script for the **Creality K2** (with or without CFS) on stock firmware, with patches for the **Phaetus DXC-2** extruder.
 
-Forked and adapted from the excellent [Guilouz Creality Helper Script](https://github.com/Guilouz/Creality-Helper-Script) - rebuilt from the ground up for the K2 Plus architecture.
-
-## Wiki & Documentation
-
-**[https://sw3defy.github.io/Creality-Helper-Script-Wiki-K2-Plus/](https://sw3defy.github.io/Creality-Helper-Script-Wiki-K2-Plus/)**
+Fork of [sw3defy/Creality-Helper-Script-K2-Plus](https://github.com/sw3defy/Creality-Helper-Script-K2-Plus), itself adapted from the [Guilouz Creality Helper Script](https://github.com/Guilouz/Creality-Helper-Script). The [upstream wiki](https://sw3defy.github.io/Creality-Helper-Script-Wiki-K2-Plus/) is written for the K2 Plus but most of it applies.
 
 ## Installation
 
-Connect to your K2 Plus via SSH, then run:
+Connect to your K2 via SSH (`root`), then run:
 
 ```sh
-python3 -c "import urllib.request; urllib.request.urlretrieve('https://github.com/sw3defy/Creality-Helper-Script-K2-Plus/archive/refs/heads/main.zip', '/tmp/helper.zip')"
+python3 -c "import urllib.request; urllib.request.urlretrieve('https://github.com/Promotheux/Creality-Helper-Script-K2/archive/refs/heads/main.zip', '/tmp/helper.zip')"
 python3 -c "import shutil; shutil.unpack_archive('/tmp/helper.zip', '/tmp/')"
-cp -r /tmp/Creality-Helper-Script-K2-Plus-main/* /mnt/UDISK/helper-script/
+mkdir -p /mnt/UDISK/helper-script
+cp -r /tmp/Creality-Helper-Script-K2-main/* /mnt/UDISK/helper-script/
 chmod +x /mnt/UDISK/helper-script/helper.sh
 sh /mnt/UDISK/helper-script/helper.sh
 ```
@@ -29,21 +26,23 @@ sh /mnt/UDISK/helper-script/helper.sh
 | 3 | Useful Macros (START_PRINT / END_PRINT) |
 | 4 | Save Z-Offset Macros |
 | 5 | M600 Filament Change Support |
-| 6 | KAMP (Klipper Adaptive Meshing & Purging) |
-| 7 | Improved Shapers Calibrations |
-| 8 | Fluidd (install/update/repair - port 4408) |
-| 9 | Mainsail (install/update/repair - port 4409) |
-| 10 | Moonraker Timelapse |
-| 11 | Camera Support for Fluidd and Mainsail (WebRTC via go2rtc) |
-| 12 | HelixScreen (modern touchscreen UI) |
-| 13 | OctoEverywhere |
-| 14 | Mobileraker Companion |
-| 15 | Entware Package Manager |
-| 16 | Git Backup |
+| 6 | DXC-2 patches (longer retract after cut; reapplied at boot after Creality updates) |
+| 7 | KAMP: points to [KAMP-K2](https://github.com/grant0013/KAMP-K2) (upstream KAMP does not work on K2 stock firmware) |
+| 8 | Improved Shapers Calibrations |
+| 9 | Fluidd (install/update/repair - port 4408) |
+| 10 | Mainsail (install/update/repair - port 4409) |
+| 11 | CFS Panel for Mainsail (written for the K2 Plus, test on your K2) |
+| 12 | Moonraker Timelapse |
+| 13 | Camera Support for Fluidd and Mainsail (WebRTC via go2rtc) |
+| 14 | HelixScreen (modern touchscreen UI) |
+| 15 | OctoEverywhere |
+| 16 | Mobileraker Companion |
+| 17 | Entware Package Manager |
+| 18 | Git Backup |
 
 ## Requirements
 
-- Creality K2 Plus or K2 Plus Combo
+- Creality K2 or K2 Combo on stock firmware
 - Root SSH access enabled
 - SSH client (e.g. PuTTY on Windows)
 
@@ -68,5 +67,6 @@ sh /mnt/UDISK/helper-script/helper.sh
 - [Moonraker](https://moonraker.readthedocs.io) - API server
 - [Fluidd](https://docs.fluidd.xyz) - Web interface
 - [Mainsail](https://docs.mainsail.xyz) - Web interface
-- [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) - Adaptive meshing
+- [KAMP](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging) / [KAMP-K2](https://github.com/grant0013/KAMP-K2) - Adaptive meshing
+- [swilsonnc/K2-plus-cfs-panel](https://github.com/swilsonnc/K2-plus-cfs-panel) - CFS panel for Mainsail
 - [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) - Wiki theme

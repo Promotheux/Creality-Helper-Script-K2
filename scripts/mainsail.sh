@@ -213,6 +213,9 @@ PYEOF
         return 1
     fi
 
+    # A Mainsail update replaces index.html; put the CFS panel link back
+    sh "$SCRIPT_DIR/scripts/cfs_panel.sh" inject
+
     # Ensure nginx block is in place
     restore_mainsail_nginx_block
 

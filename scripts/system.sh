@@ -362,6 +362,14 @@ install_rc_local_patch() {
         sed -i 's|exit 0|# Ensure Moonraker loads UDISK extension config\n/bin/sh /mnt/UDISK/helper-script/scripts/system.sh install_moonraker_include\n\nexit 0|' "$rc_local"
         log_success "Added install_moonraker_include to rc.local"
     fi
+
+    # After patch_stock_configs, so it sees the renamed macro; no-op unless the DXC-2 patch is installed
+    if grep -q "patches.sh boot" "$rc_local" 2>/dev/null; then
+        log_info "DXC-2 rc.local patch already installed."
+    else
+        sed -i 's|exit 0|# Reapply DXC-2 patches after Creality updates\n/bin/sh /mnt/UDISK/helper-script/scripts/patches.sh boot\n\nexit 0|' "$rc_local"
+        log_success "Added DXC-2 patch reapply to rc.local"
+    fi
 }
 
 # ── Moonraker include fix (ensure UDISK moonraker.conf is actually loaded) ────

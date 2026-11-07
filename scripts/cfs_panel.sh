@@ -4,121 +4,80 @@ SCRIPT_DIR=/mnt/UDISK/helper-script
 . "$SCRIPT_DIR/scripts/system.sh"
 
 MAINSAIL_DIR=/usr/share/mainsail
+# Pinned commit (2026-08-10); bump deliberately after testing a newer one.
+CFS_PANEL_URL=https://raw.githubusercontent.com/swilsonnc/K2-plus-cfs-panel/f42a5126c5c619c02350083895497b3c340541d5/cfs-panel.js
+
+# Add (inject) or remove (strip) the panel's <script> tag in Mainsail's index.html.
+# Editing the tag instead of restoring a backup keeps a newer Mainsail intact.
+edit_index() {
+    python3 - "$MAINSAIL_DIR/index.html" "$1" << 'PYEOF'
+import sys
+path, mode = sys.argv[1], sys.argv[2]
+tag = '<script src="cfs-panel.js" defer></script>'
+html = open(path, encoding='utf-8').read()
+if mode == 'inject':
+    if 'cfs-panel.js' in html:
+        print('CFS panel already linked in index.html')
+        sys.exit(0)
+    anchor = '<div id="app"></div>'
+    if anchor not in html:
+        print('ERROR: <div id="app"></div> not found in index.html')
+        sys.exit(1)
+    html = html.replace(anchor, anchor + tag, 1)
+else:
+    # also the tag older versions of this script added
+    for t in (tag, '\n    <script src="cfs-panel.js"></script>', '<script src="cfs-panel.js"></script>'):
+        html = html.replace(t, '')
+open(path, 'w', encoding='utf-8').write(html)
+print('index.html updated (%s)' % mode)
+PYEOF
+}
 
 install_cfs_panel() {
     echo ""
     log_info "Installing CFS Panel for Mainsail..."
+    log_warn "This panel is written for the K2 Plus; test it on your K2 before relying on it."
     echo ""
 
-    if [ ! -d "$MAINSAIL_DIR" ] || [ ! -f "$MAINSAIL_DIR/index.html" ]; then
-        log_error "Mainsail is niet gevonden in $MAINSAIL_DIR. Installeer eerst Mainsail."
+    if [ ! -f "$MAINSAIL_DIR/index.html" ]; then
+        log_error "Mainsail not found in $MAINSAIL_DIR. Install Mainsail first."
         return 1
     fi
 
-    # Download de repo tijdelijk
-    rm -rf /tmp/cfs-panel
-    if command -v git >/dev/null 2>&1; then
-        git clone https://github.com/swilsonnc/K2-plus-cfs-panel.git /tmp/cfs-panel
-    else
-        python3 -c "
-import urllib.request, zipfile, os, glob, shutil
-url = 'https://github.com/swilsonnc/K2-plus-cfs-panel/archive/refs/heads/main.zip'
-urllib.request.urlretrieve(url, '/tmp/cfs_panel.zip')
-os.makedirs('/tmp/cfs-panel', exist_ok=True)
-with zipfile.ZipFile('/tmp/cfs_panel.zip', 'r') as z:
-    z.extractall('/tmp/cfs_panel_extract/')
-src = glob.glob('/tmp/cfs_panel_extract/*')[0]
-shutil.copytree(src, '/tmp/cfs-panel', dirs_exist_ok=True)
-"
-    fi
+    python3 -c "import urllib.request,sys; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" \
+        "$CFS_PANEL_URL" /tmp/cfs-panel.js || { log_error "Downloading the CFS panel failed."; return 1; }
+    mv /tmp/cfs-panel.js "$MAINSAIL_DIR/cfs-panel.js"
 
-    if [ ! -d "/tmp/cfs-panel" ]; then
-        log_error "Download van CFS Panel mislukt."
-        return 1
-    fi
-
-    log_info "Bestanden kopiëren naar Mainsail..."
-    
-    # Zoek en kopieer cfs-panel.js naar /usr/share/mainsail/
-    if [ -f "/tmp/cfs-panel/cfs-panel.js" ]; then
-        cp /tmp/cfs-panel/cfs-panel.js "$MAINSAIL_DIR/"
-        log_success "cfs-panel.js geplaatst in $MAINSAIL_DIR"
-    else
-        # Zoek eventueel dieper in de mappenstructuur als hij ergens anders staat
-        find /tmp/cfs-panel -name "cfs-panel.js" -exec cp {} "$MAINSAIL_DIR/" \;
-        log_success "cfs-panel.js gekopieerd."
-    fi
-
-    # Backup en patch index.html
-    if [ -f "$MAINSAIL_DIR/index.html" ]; then
-        if [ ! -f "$MAINSAIL_DIR/index.html.bak" ]; then
-            cp "$MAINSAIL_DIR/index.html" "$MAINSAIL_DIR/index.html.bak"
-            log_success "Backup gemaakt van Mainsail index.html"
-        fi
-
-        python3 - << 'PYEOF'
-import os
-
-index_path = '/usr/share/mainsail/index.html'
-with open(index_path, 'r', encoding='utf-8') as f:
-    content = f.read()
-
-# Controleer of het script er al in staat om dubbele injectie te voorkomen
-if 'cfs-panel.js' not in content:
-    target = '<div id="app"></div>'
-    # Voeg het script toe onder <div id="app"></div> (of direct erachter met een script-tag)
-    injection = '<div id="app"></div>\n    <script src="cfs-panel.js"></script>'
-    if target in content:
-        content = content.replace(target, injection)
-        with open(index_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-        print("cfs-panel.js succesvol gekoppeld in index.html")
-    else:
-        print("Waarschuwing: <div id=\"app\"></div> niet gevonden in index.html")
-else:
-    print("cfs-panel.js is reeds aanwezig in index.html")
-PYEOF
-    fi
-
-    rm -rf /tmp/cfs-panel /tmp/cfs_panel.zip /tmp/cfs_panel_extract
-
-    restart_moonraker force
-    restart_klipper force
+    edit_index inject || return 1
+    # Static files: a browser refresh is enough, no Klipper/Moonraker restart.
     mark_installed "cfs_panel"
-    log_success "CFS Panel for Mainsail succesvol geïnstalleerd!"
+    log_success "CFS Panel installed. Refresh Mainsail in your browser."
     echo ""
 }
 
 remove_cfs_panel() {
     if ! is_installed "cfs_panel"; then
-        log_info "CFS Panel for Mainsail is niet geïnstalleerd."
+        log_info "CFS Panel for Mainsail is not installed."
         return 0
     fi
 
-    echo -e "${YELLOW}WARNING: Dit verwijdert het CFS Panel voor Mainsail.${NC}"
-    printf "Weet je dit zeker? [y/n]: "
+    echo -e "${YELLOW}WARNING: This removes the CFS Panel for Mainsail.${NC}"
+    printf "Are you sure? [y/n]: "
     read confirm
-    [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && { log_info "Geannuleerd."; return 0; }
+    [ "$confirm" != "y" ] && [ "$confirm" != "Y" ] && { log_info "Cancelled."; return 0; }
 
-    log_info "CFS Panel verwijderen..."
-    rm -f "$MAINSAIL_DIR/cfs-panel.js"
-
-    # Herstel index.html vanuit backup indien aanwezig
-    if [ -f "$MAINSAIL_DIR/index.html.bak" ]; then
-        cp "$MAINSAIL_DIR/index.html.bak" "$MAINSAIL_DIR/index.html"
-        rm -f "$MAINSAIL_DIR/index.html.bak"
-        log_success "Originele index.html hersteld."
-    fi
-
-    restart_moonraker force
-    restart_klipper force
+    [ -f "$MAINSAIL_DIR/index.html" ] && edit_index strip
+    # index.html.bak came from older versions of this script and may predate a Mainsail update
+    rm -f "$MAINSAIL_DIR/cfs-panel.js" "$MAINSAIL_DIR/index.html.bak"
     mark_removed "cfs_panel"
-    log_success "CFS Panel for Mainsail verwijderd."
+    log_success "CFS Panel removed. Refresh Mainsail in your browser."
     echo ""
 }
 
 case "$1" in
     install) install_cfs_panel ;;
     remove)  remove_cfs_panel ;;
-    *)       echo "Usage: $0 [install|remove]" ;;
+    # mainsail.sh: relink after a Mainsail update replaced index.html
+    inject)  is_installed "cfs_panel" && edit_index inject ;;
+    *)       echo "Usage: $0 [install|remove|inject]" ;;
 esac
